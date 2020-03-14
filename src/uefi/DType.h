@@ -1,0 +1,48 @@
+// DType.h
+// Update ver.develop0.1
+
+#ifndef __DTYPE__
+#define __DTYPE__
+
+typedef char                BOOLEAN;
+
+#define FALSE   0
+#define TRUE    1
+
+typedef signed long int     INTN;
+typedef unsigned long int   UINTN;
+
+typedef signed char         INT8;
+typedef unsigned char       UINT8;
+
+typedef signed short int    INT16;
+typedef unsigned short int  UINT16;
+
+typedef signed int          INT32;
+typedef unsigned int        UINT32;
+
+typedef signed long int     INT64;
+typedef unsigned long int   UINT64;
+
+typedef unsigned char       CHAR8;
+typedef unsigned short int  CHAR16;
+
+typedef void                VOID;
+
+typedef struct {
+    UINT32  Data1;
+    UINT16  Data2;
+    UINT16  Data3;
+    UINT8   Data4[8];
+} GUID;
+
+typedef GUID EFI_GUID;
+
+typedef UINTN               EFI_STATUS;
+typedef VOID*               EFI_HANDLE;
+typedef VOID*               EFI_EVENT;
+
+#define NULL    0
+
+#endif      // __DTYPE__
+
