@@ -56,7 +56,7 @@ typedef struct SIMPLE_TEXT_OUTPUT_MODE {
 
 // ************************************
 //  EFI_SIMPLE_OUTPUT_PROTOCOL
-//  Update  develop0.1
+//  Update  develop1.0
 // ************************************
 #define EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL_GUID \
     { 0x387477C2, 0x69C7, 0x11D2, \
@@ -65,12 +65,21 @@ EFI_GUID gEfiSimpleTextOutputProtocolGuid = EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL_GUID
 
 typedef struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL {
     EFI_STATUS  Reset;
-    EFI_STATUS  OutputString;
+
+    EFI_STATUS  (*OutputString) (
+            struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL  *This,
+            CHAR16                                  *String
+    );
+
     EFI_STATUS  TestString;
     EFI_STATUS  QueryMode;
     EFI_STATUS  SetMode;
     EFI_STATUS  SetAttribute;
-    EFI_STATUS  ClearScreen;
+
+    EFI_STATUS  (*ClearScreen) (
+            struct EFI_SIMPLE_TEXT_OUTPUT_PROTOCOL *This
+    );
+
     EFI_STATUS  SetCursorPosition;
     EFI_STATUS  EnableCursor;
     SIMPLE_TEXT_OUTPUT_MODE *Mode;
