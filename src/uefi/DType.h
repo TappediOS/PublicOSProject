@@ -21,8 +21,8 @@ typedef unsigned short int  UINT16;
 typedef signed int          INT32;
 typedef unsigned int        UINT32;
 
-typedef signed long int     INT64;
-typedef unsigned long int   UINT64;
+typedef signed long long int     INT64;
+typedef unsigned long long int   UINT64;
 
 typedef unsigned char       CHAR8;
 typedef unsigned short int  CHAR16;
@@ -38,7 +38,7 @@ typedef struct {
 
 typedef GUID EFI_GUID;
 
-typedef UINTN               EFI_STATUS;
+typedef unsigned long long  EFI_STATUS;
 typedef VOID*               EFI_HANDLE;
 typedef VOID*               EFI_EVENT;
 
