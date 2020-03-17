@@ -7,34 +7,81 @@
 
 #include <DType.h>
 #include <SystemStruct.h>
+#include <FileStruct.h>
 
-EFI_STATUS OpenRootFileDir(EFI_HANDLE ImageHandle, EFI_FILE_PROTOCOL **root);
+#include <stdio.h>
+#include <string.h>
+
 
 EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
     initGlobal(SystemTable);
 
-    gST->ConOut->ClearScreen(gST->ConOut);
-
     EFI_STATUS  Status;
+    Status = SystemTable->ConOut->ClearScreen(SystemTable->ConOut);
 
-    // Get Handle of Root Directory
+    // open root dir
     EFI_FILE_PROTOCOL *root = NULL;
-    Status = OpenRootFileDir(ImageHandle, &root);
-    if (Status == EFI_ERROR) {
-        gST->ConOut->OutputString(gST->ConOut, L"Could not open file protocol for the root: %r\r\n", Status);
+    EFI_SIMPLE_FILE_SYSTEM_PROTOCOL *SimpleFileSystem;
+    EFI_LOADED_IMAGE_PROTOCOL   *LoadedImage;
+    // OpenFileProtocolForThisAppRootDir(ImageHandle, &RootDir);
+    // OpenSimpleFileSystemProtocol(ImageHandle, &SimpleFileSystem, &SimpleFileSystemOpener)
+
+    Status = gBS->OpenProtocol(
+            ImageHandle,
+            &gEfiLoadedImageProtocolGuid,
+            (VOID**)&LoadedImage,
+            ImageHandle,
+            NULL,
+            EFI_OPEN_PROTOCOL_GET_PROTOCOL);
+    if (Status != EFI_SUCCESS) {
+        printf(L"[Fatal] Open Protocol of LoadedImage Error : %d\r\n", Status);
+        return Status;
+    }
+    printf(L"[Success] Open Protocol of LoadedImage\r\n");
+
+    // **SimpleFileSystemOpener = LoadedImage->DeviceHandle;
+    Status = gBS->OpenProtocol(
+            LoadedImage->DeviceHandle,
+            &gEfiSimpleFileSystemProtocolGuid,
+            (VOID**)&SimpleFileSystem,
+            ImageHandle,
+            NULL,
+            EFI_OPEN_PROTOCOL_GET_PROTOCOL);
+    if (Status != EFI_SUCCESS) {
+        printf(L"[Fatal] Open Protocol of SimpleFileSystem Error : %d\r\n", Status);
+        return Status;
+    }
+    printf(L"[Success] Open Protocol of SimpleFileSystem\r\n");
+
+    Status = SimpleFileSystem->OpenVolume(SimpleFileSystem, &root);
+    if (Status != EFI_SUCCESS) {
+        printf(L"[Fatal] Open Volume of root Error : %d\r\n", Status);
+        return Status;
+    }
+    printf(L"[Success] Open Volume of root\r\n");
+
+    // open kernel file
+    EFI_FILE_PROTOCOL *kernel;
+    CHAR16 *FilePath = L"\\kernel.elf";
+    Status = root->Open(root, &kernel, FilePath, EFI_FILE_MODE_READ, 0);
+    if (Status != EFI_SUCCESS) {
+        printf(L"[Fatal] Kernel Open Error : %d\r\n", Status);
         return Status;
     }
 
+    UINTN   FileInfoBufSize = sizeof(EFI_FILE_INFO) + sizeof(CHAR16) * strlen(FilePath) + 2;
+    UINT8   FileInfoBuf[FileInfoBufSize];
+    Status = kernel->GetInfo(kernel, &gEfiFileInfoGuid, &FileInfoBufSize, FileInfoBuf);
+    if (Status != EFI_SUCCESS) {
+        printf(L"[Fatal] Get Kernel Info Error : %d\r\n", Status);
+        return Status;
+    }
+    printf(L"Kernel Loaded (Name : %s)\r\n", FileInfoBuf + sizeof(EFI_FILE_INFO));
+
+    printf(L"[Success] open file protocol for the root SUCCESS\r\n");
     while (1);
 
     return 0;
 }
-
-EFI_STATUS OpenRootFileDir(EFI_HANDLE ImageHandle, EFI_FILE_PROTOCOL **root) {
-
-
-    return 0;
-}
-
 
 

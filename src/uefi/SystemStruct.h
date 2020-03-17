@@ -93,11 +93,22 @@ typedef UINTN   EFI_TPL;
 #define TPL_NOTIFY          16
 #define TPL_HIGH_LEVEL      31
 
+// ******************************************
+//      Protocol Handler Services
+//  UEFI.Spec 6-3
+//  Update  develop1.0
+// ******************************************
+#define EFI_OPEN_PROTOCOL_BY_HANDLE_PROTOCOL    0x00000001
+#define EFI_OPEN_PROTOCOL_GET_PROTOCOL          0x00000002
+#define EFI_OPEN_PROTOCOL_TEST_PROTOCOL         0x00000004
+#define EFI_OPEN_PROTOCOL_BY_CHILD_CONTROLLER   0x00000008
+#define EFI_OPEN_PROTOCOL_BY_DRIVER             0x00000010
+#define EFI_OPEN_PROTOCOL_EXCLUSIVE             0x00000020
 
 // ******************************************
 //      BootServices
 //  UEFI.Spec 4-4
-//  Update  develop0.1
+//  Update  develop1.0
 // ******************************************
 typedef struct {
     EFI_TABLE_HEADER        Hdr;
@@ -141,7 +152,13 @@ typedef struct {
     EFI_STATUS  InstallProtocolInterface;
     EFI_STATUS  ReinstallProtocolInterface;
     EFI_STATUS  UninstallProtocolInterface;
-    EFI_STATUS  HandleProtocol;
+
+    EFI_STATUS  (*HandleProtocol) (
+            EFI_HANDLE  Handle,
+            EFI_GUID    *Protocol,
+            VOID        **Interface
+    );
+
     VOID*       Reserved;
     EFI_STATUS  RegisterProtocolNotify;
     EFI_STATUS  LocateHandle;
@@ -179,10 +196,22 @@ typedef struct {
     //
     // Open and Close Protocol Services
     // UEFI.Spec 6-3
-    // Update  develop0.1
+    // Update  develop1.0
     //
-    EFI_STATUS  OpenProtocol;
-    EFI_STATUS  CloseProtocol;
+    EFI_STATUS  (*OpenProtocol) (
+            EFI_HANDLE  Handle,
+            EFI_GUID    *Protocol,
+            VOID        **Interface,     // option
+            EFI_HANDLE  AgentHandle,
+            EFI_HANDLE  ControllerHandle,
+            UINT32      Attributes
+    );
+    EFI_STATUS  (*CloseProtocol) (
+            EFI_HANDLE  Handle,
+            EFI_GUID    *Protocol,
+            EFI_HANDLE  AgentHandle,
+            EFI_HANDLE  ControllerHandle
+    );
     EFI_STATUS  OpenProtocolInformation;
 
     //
@@ -192,7 +221,11 @@ typedef struct {
     //
     EFI_STATUS  ProtocolsPerHandle;
     EFI_STATUS  LocateHandleBuffer;
-    EFI_STATUS  LocateProtocol;
+    EFI_STATUS  (*LocateProtocol) (
+            EFI_GUID    *Protocol,
+            VOID        *Registration,
+            VOID        **Interface
+    );
     EFI_STATUS  InstallMultipleProtocolInterfaces;
     EFI_STATUS  UninstallMultipleProtocolInterfaces;
 
@@ -230,7 +263,7 @@ typedef struct {
 //  UEFI.Spec 4-3
 //  Update  develop0.1
 // ******************************************
-typedef struct {
+typedef struct EFI_SYSTEM_TABLE {
     EFI_TABLE_HEADER                Hdr;
     CHAR16                          *FirmwareVendor;
     UINT32                          FirmwareRevision;
@@ -245,6 +278,7 @@ typedef struct {
     UINTN                           NumberOfTableEntries;
     EFI_CONFIGURATION_TABLE         *ConfigurationTable;
 } EFI_SYSTEM_TABLE;
+
 
 #endif      // __SYSTEMSTRUCT__
 
