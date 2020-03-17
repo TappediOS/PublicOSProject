@@ -76,7 +76,12 @@ EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
         printf(L"[Fatal] Get Kernel Info Error : %d\r\n", Status);
         return Status;
     }
-    printf(L"[Info] Kernel Loaded (Name : %s)\r\n", FileInfoBuf + sizeof(EFI_FILE_INFO));
+
+    EFI_FILE_INFO *FileInfo = (EFI_FILE_INFO*)FileInfoBuf;
+    printf(L"-----   Kernel Info   -----\r\n");
+    printf(L"Size     : 0x%x\r\n", FileInfo->Size);
+    printf(L"FileSize : 0x%x\r\n", FileInfo->FileSize);
+    printf(L"FileName : %s\r\n", FileInfo->FileName);
 
     printf(L"[Success] open file protocol for the root SUCCESS\r\n");
     while (1);
