@@ -53,5 +53,17 @@ typedef VOID*               EFI_EVENT;
 #define EFI_LOAD_ERROR          1
 #define EFI_INVALID_PARAMATER   2
 
+
+CHAR16 err_msg[36][80] = {
+    L"The operation completed successfully.",
+    L"The image failed to load.",
+    L"A parameter was incorrect.",
+    L"The operation is not supported.",
+    L"The buffer was not the proper size for the request.",
+    L"The buffer is not large enough to hold the requested data.",
+    L"There is no data pending upon return.",
+    L"The physical device reported an error while attempting the operation."
+};
+
 #endif      // __DTYPE__
 

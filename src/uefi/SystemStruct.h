@@ -94,6 +94,50 @@ typedef UINTN   EFI_TPL;
 #define TPL_HIGH_LEVEL      31
 
 // ******************************************
+//      Memory Allocation Services
+//  UEFI.Spec 6-2
+//  Update  develop1.1
+// ******************************************
+
+// ******************************************
+//  EFI_ALLOCATE_TYPE
+// ******************************************
+typedef enum {
+    AllocateAnyPages,
+    AllocateMaxAddress,
+    AllocateAddress,
+    MaxAllocateType
+} EFI_ALLOCATE_TYPE;
+
+// ******************************************
+//  EFI_MEMORY_TYPE
+// ******************************************
+typedef enum {
+    EfiReservedMemoryType,
+    EfiLoaderCode,
+    EfiLoaderData,
+    EfiBootServicesCode,
+    EfiBootServicesData,
+    EfiRuntimeServicesCode,
+    EfiRuntimeServicesData,
+    EfiConventionalMemory,
+    EfiUnusableMemory,
+    EfiACPIReclaimMemory,
+    EfiACPIMemoryNVS,
+    EfiMemoryMappedIO,
+    EfiMemoryMappedIOPortSpace,
+    EfiPalCode,
+    EfiPersistentMemory,
+    EfiMaxMemoryType
+} EFI_MEMORY_TYPE;
+
+// ******************************************
+//  EFI_PHYSICAL_ADDRESS
+// ******************************************
+typedef UINT64 EFI_PHYSICAL_ADDRESS;
+
+
+// ******************************************
 //      Protocol Handler Services
 //  UEFI.Spec 6-3
 //  Update  develop1.0
@@ -124,9 +168,14 @@ typedef struct {
     //
     // Memory Services
     // UEFI.Spec 6-2
-    // Update  develop0.1
+    // Update  develop1.1
     //
-    EFI_STATUS  AllocatePages;
+    EFI_STATUS  (*AllocatePages) (
+            EFI_ALLOCATE_TYPE       Type,
+            EFI_MEMORY_TYPE         MemoryType,
+            UINTN                   Pages,
+            EFI_PHYSICAL_ADDRESS    *Memory
+    );
     EFI_STATUS  FreePages;
     EFI_STATUS  GetMemoryMap;
     EFI_STATUS  AllocatePool;

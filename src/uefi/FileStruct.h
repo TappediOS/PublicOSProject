@@ -24,31 +24,6 @@ struct EFI_FILE_PROTOCOL;
 EFI_GUID gEfiLoadedImageProtocolGuid = EFI_LOADED_IMAGE_PROTOCOL_GUID;
 
 //
-// EFI Memory Type
-// EFI.Spec 6-2
-// Update  develop1.0
-//
-typedef enum {
-    EfiReservedMemoryType,
-    EfiLoaderCode,
-    EfiLoaderData,
-    EfiBootServicesCode,
-    EfiBootServicesData,
-    EfiRuntimeServicesCode,
-    EfiRuntimeServicesData,
-    EfiConventionalMemory,
-    EfiUnusableMemory,
-    EfiACPIReclaimMemory,
-    EfiACPIMemoryNVS,
-    EfiMemoryMappedIO,
-    EfiMemoryMappedIOPortSpace,
-    EfiPalCode,
-    EfiPersistentMemory,
-    EfiMaxMemoryType
-} EFI_MEMORY_TYPE;
-
-
-//
 // EFI Device Path Protocol
 // UEFI.Spec 9-2
 // Update  develop1.0
@@ -170,10 +145,16 @@ typedef struct EFI_FILE_PROTOCOL {
             CHAR16 *FileName,
             UINT64 OpenMode,
             UINT64 Attributes
-    );;
-    EFI_STATUS      Close;
+    );
+    EFI_STATUS      (*Close) (
+            struct EFI_FILE_PROTOCOL *This
+    );
     EFI_STATUS      Delete;
-    EFI_STATUS      Read;
+    EFI_STATUS      (*Read) (
+            struct EFI_FILE_PROTOCOL    *This,
+            UINTN                       *BufferSize,
+            VOID                        *Buffer
+    );
     EFI_STATUS      Write;
     EFI_STATUS      GetPosition;
     EFI_STATUS      SetPosition;
