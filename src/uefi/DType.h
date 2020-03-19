@@ -11,8 +11,8 @@ typedef char                BOOLEAN;
 #define FALSE   0
 #define TRUE    1
 
-typedef signed long int     INTN;
-typedef unsigned long int   UINTN;
+typedef signed long long int     INTN;
+typedef unsigned long long int   UINTN;
 
 typedef signed char         INT8;
 typedef unsigned char       UINT8;
