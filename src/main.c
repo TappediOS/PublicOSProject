@@ -29,6 +29,7 @@ EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
     EFI_FILE_PROTOCOL *root = NULL;
     EFI_SIMPLE_FILE_SYSTEM_PROTOCOL *SimpleFileSystem;
     EFI_LOADED_IMAGE_PROTOCOL   *LoadedImage;
+
     Status = gBS->OpenProtocol(
             ImageHandle,
             &gEfiLoadedImageProtocolGuid,
@@ -42,7 +43,6 @@ EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
     }
     printf(L"[Success] Open Protocol of LoadedImage\r\n");
 
-    // **SimpleFileSystemOpener = LoadedImage->DeviceHandle;
     Status = gBS->OpenProtocol(
             LoadedImage->DeviceHandle,
             &gEfiSimpleFileSystemProtocolGuid,
@@ -103,6 +103,20 @@ EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
     printf(L"[Success] Allocate Kernel File Buffer\r\n");
 
     // Read the Kernel File Header
+    struct test {
+        void *bss_start;
+        unsigned long long bss_size;
+    } test;
+    unsigned long long test_size = sizeof(test);
+    Status = kernel->Read(kernel, &test_size, (void*)&test);
+    if (Status != EFI_SUCCESS) {
+        printf(L"[Fatal] TEST READ ERROR : %s\r\n", err_msg[Status]);
+        while (1);
+        return Status;
+    }
+    printf(L"[Success] TEST READ\r\n");
+
+
     KernelHeader    header;
     char buf[256];
     UINTN           KernelHeaderSize = 0x10;
