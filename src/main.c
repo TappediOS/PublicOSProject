@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define KERNEL_ENTRY    0x100000
+#define KERNEL_ENTRY    0x110000
 
 #define MEM_DESC_SIZE   4096
 
@@ -157,6 +157,7 @@ EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
             return Status;
         }
     } while (Status != EFI_SUCCESS);
+    __asm__ (" jmp 0x110000\n");
 
     while (1);
 
