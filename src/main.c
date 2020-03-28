@@ -14,6 +14,8 @@
 
 #define KERNEL_ENTRY    0x100000
 
+#define MEM_DESC_SIZE   4096
+
 typedef struct KernelHeader {
     void *BssStart;
     unsigned long long BssSize;
@@ -87,20 +89,9 @@ EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
     printf(L"FileSize : 0x%x\r\n", FileInfo->FileSize);
     printf(L"FileName : %s\r\n", FileInfo->FileName);
 
-
     // allocate buf for the kernel size
     EFI_PHYSICAL_ADDRESS    KernelFilePointer = 0;
     UINTN                   KernelFileSize = FileInfo->FileSize;
-    Status = gBS->AllocatePages(
-            AllocateAnyPages,
-            EfiLoaderData,
-            (KernelFileSize + 4095) / 4096,
-            &KernelFilePointer);
-    if (Status != EFI_SUCCESS) {
-        printf(L"[Fatal] Allocate Kernel File Buffer Error : %d\r\n", Status);
-        return Status;
-    }
-    printf(L"[Success] Allocate Kernel File Buffer\r\n");
 
     // Read the Kernel File Header
     KernelHeader    header;
@@ -124,15 +115,49 @@ EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
     }
     printf(L"[Success] Kernel Main Read\r\n");
 
+    // print MainKernel head
+    printf(L"Kernel : ");
+    UINTN   i;
+    CHAR8 *p = (CHAR8*) KERNEL_ENTRY;
+    for (i = 0; i < 0x10; i++)
+        printf(L"%x ", *p++);
+    printf(L"\r\n");
+
+    // Write Kernel to Memory ???
+    // Status = gBS->CopyMem(, KERNEL_ENTRY, KernelFileSize);
+
     Status = kernel->Close(kernel);
     if (Status != EFI_SUCCESS) {
         printf(L"[Fatal] Kernel Close Error : %s\r\n", err_msg[Status]);
         return Status;
     }
     printf(L"[Success] Kernel Close\r\n");
+    printf(L"[Info]SystemTable : 0x%x\r\n", SystemTable);
 
+    // exit boot services
+    UINTN           mapSize = 0;
+    UINTN           mapKey;
+    UINTN           descSize;
+    UINT32          descVersion;
+    EFI_MEMORY_DESCRIPTOR   *memoryMap = NULL;
+    do {
+        Status = gBS->GetMemoryMap(&mapSize, memoryMap, &mapKey, &descSize, &descVersion);
+        while (Status == EFI_BUFFER_TOO_SMALL) {
+            if (memoryMap) {
+                gBS->FreePool(memoryMap);
+            }
+            mapSize += 0x1000;
+            Status = gBS->AllocatePool(EfiLoaderData, mapSize, (void**)&memoryMap);
+            Status = gBS->GetMemoryMap(&mapSize, memoryMap, &mapKey, &descSize, &descVersion);
+        }
+        Status = gBS->ExitBootServices(ImageHandle, mapKey);
+        if (Status != EFI_SUCCESS) {
+            printf(L"[Fatal] ExitBootServices : %s(%d)\r\n", err_msg[Status], Status);
+            while (1);
+            return Status;
+        }
+    } while (Status != EFI_SUCCESS);
 
-    printf(L"[Success] open file protocol for the root SUCCESS\r\n");
     while (1);
 
     return 0;
