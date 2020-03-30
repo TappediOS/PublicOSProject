@@ -8,6 +8,7 @@
 #include <DType.h>
 #include <SystemStruct.h>
 #include <FileStruct.h>
+#include <GraphicStruct.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -26,6 +27,18 @@ EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
 
     EFI_STATUS  Status;
     Status = SystemTable->ConOut->ClearScreen(SystemTable->ConOut);
+
+    // get graphics
+    EFI_GRAPHICS_OUTPUT_PROTOCOL *graphics = NULL;
+    Status = gBS->LocateProtocol(&gEfiGraphicsOutputProtocolGuid, NULL, (void**)&graphics);
+    if (Status != EFI_SUCCESS) {
+        printf(L"[Fatal] GraphicOutputProtocol Locate Error : %s\r\n", err_msg[Status]);
+        while (1);
+        return 0;
+    }
+    printf(L"[Success] GraphicOutputProtocol Locate\r\n");
+
+    unsigned long *fb = (unsigned long *)graphics->Mode->FrameBufferBase;
 
     // open root dir
     EFI_FILE_PROTOCOL *root = NULL;

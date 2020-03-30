@@ -3,8 +3,8 @@ CC = x86_64-w64-mingw32-gcc
 CFLAGS = -Wall -Wextra -e efiMain -nostdlib -fno-builtin -Wl,--subsystem,10 -mno-stack-arg-probe
 
 ###  File List  ###
-fUEFI 		= boot/uefi/SystemStruct.h boot/uefi/DType.h boot/uefi/IOStruct.h boot/uefi/FileStruct.h
-fINCLUDE	= boot/include/stdio.h src/include/string.h
+fUEFI 		= boot/uefi/SystemStruct.h boot/uefi/DType.h boot/uefi/IOStruct.h boot/uefi/FileStruct.h boot/uefi/GraphicStruct.h
+fINCLUDE	= boot/include/stdio.h boot/include/string.h
 
 
 ###  Include Option  ###
@@ -19,7 +19,7 @@ DRIVE = -drive file=fat:rw:image,format=raw
 COPY = copy
 
 
-main.efi: src/main.c $(fUEFI) $(fINCLUDE) Makefile
+main.efi: boot/main.c $(fUEFI) $(fINCLUDE) Makefile
 	$(CC) boot/main.c -o main.efi $(iUEFI) $(iINCLUDE) $(CFLAGS)
 	$(COPY) main.efi image\EFI\BOOT\BOOTX64.EFI
 
