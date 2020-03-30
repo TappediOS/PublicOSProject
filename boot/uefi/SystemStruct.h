@@ -5,6 +5,7 @@
 
 #include <DType.h>
 #include <IOStruct.h>
+#include <MemoryStruct.h>
 
 #ifndef __SYSTEMSTRUCT__
 #define __SYSTEMSTRUCT__
@@ -94,50 +95,6 @@ typedef UINTN   EFI_TPL;
 #define TPL_HIGH_LEVEL      31
 
 // ******************************************
-//      Memory Allocation Services
-//  UEFI.Spec 6-2
-//  Update  develop1.1
-// ******************************************
-
-// ******************************************
-//  EFI_ALLOCATE_TYPE
-// ******************************************
-typedef enum {
-    AllocateAnyPages,
-    AllocateMaxAddress,
-    AllocateAddress,
-    MaxAllocateType
-} EFI_ALLOCATE_TYPE;
-
-// ******************************************
-//  EFI_MEMORY_TYPE
-// ******************************************
-typedef enum {
-    EfiReservedMemoryType,
-    EfiLoaderCode,
-    EfiLoaderData,
-    EfiBootServicesCode,
-    EfiBootServicesData,
-    EfiRuntimeServicesCode,
-    EfiRuntimeServicesData,
-    EfiConventionalMemory,
-    EfiUnusableMemory,
-    EfiACPIReclaimMemory,
-    EfiACPIMemoryNVS,
-    EfiMemoryMappedIO,
-    EfiMemoryMappedIOPortSpace,
-    EfiPalCode,
-    EfiPersistentMemory,
-    EfiMaxMemoryType
-} EFI_MEMORY_TYPE;
-
-// ******************************************
-//  EFI_PHYSICAL_ADDRESS
-// ******************************************
-typedef UINT64 EFI_PHYSICAL_ADDRESS;
-
-
-// ******************************************
 //      Protocol Handler Services
 //  UEFI.Spec 6-3
 //  Update  develop1.0
@@ -152,7 +109,7 @@ typedef UINT64 EFI_PHYSICAL_ADDRESS;
 // ******************************************
 //      BootServices
 //  UEFI.Spec 4-4
-//  Update  develop1.0
+//  Update  develop1.1
 // ******************************************
 typedef struct {
     EFI_TABLE_HEADER        Hdr;
@@ -177,9 +134,21 @@ typedef struct {
             EFI_PHYSICAL_ADDRESS    *Memory
     );
     EFI_STATUS  FreePages;
-    EFI_STATUS  GetMemoryMap;
-    EFI_STATUS  AllocatePool;
-    EFI_STATUS  FreePool;
+    EFI_STATUS  (*GetMemoryMap) (
+            UINTN *MemoryMapSize,
+            EFI_MEMORY_DESCRIPTOR *MemoryMap,
+            UINTN *MapKey,
+            UINTN *DescriptorSize,
+            UINT32 *DescriptorVersion
+    );
+    EFI_STATUS  (*AllocatePool) (
+            EFI_MEMORY_TYPE PoolType,
+            UINTN Size,
+            VOID **Buffer
+    );
+    EFI_STATUS  (*FreePool) (
+            VOID* Buffer
+    );
 
     //
     // Event and Timer Services
@@ -223,7 +192,10 @@ typedef struct {
     EFI_STATUS  StartImage;
     EFI_STATUS  Exit;
     EFI_STATUS  UnloadImage;
-    EFI_STATUS  ExitBootServices;
+    EFI_STATUS  (*ExitBootServices) (
+            EFI_HANDLE  ImageHandle,
+            UINTN       MapKey
+    );
 
     //
     // Miscellaneous Services
