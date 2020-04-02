@@ -262,7 +262,11 @@ typedef struct {
     // UEFI.Spec 6-5
     // Update  develop0.1
     //
-    VOID        (*CopyMem) ();
+    VOID        (*CopyMem) (
+            VOID   *Destination,
+            VOID   *Source,
+            UINTN  Length
+    );
     VOID        (*SetMem) ();
     EFI_STATUS  CreaetEventEx;
 } EFI_BOOT_SERVICES;

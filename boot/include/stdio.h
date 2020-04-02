@@ -15,10 +15,13 @@ int printf(CHAR16 *s, ...);
 #ifndef __STDIO__
 #define __STDIO__
 
+#define STDIO_BUF_LENGTH 64
+
 
 int printf(CHAR16 *s, ...) {
-    int i, d, ret = 0;
-    CHAR16 *t, ch[2], num[32];
+    unsigned long long i, d;
+    int ret = 0;
+    CHAR16 *t, ch[2], num[STDIO_BUF_LENGTH];
     va_list ap;
     CHAR16 sx[] = {
         L'0', L'1', L'2', L'3', L'4', L'5', L'6', L'7',
@@ -32,7 +35,7 @@ int printf(CHAR16 *s, ...) {
             switch (*s) {
             case L'd':
                 i = 0;
-                d = va_arg(ap, int);
+                d = va_arg(ap, unsigned long long);
                 do {
                     num[i++] = (d % 10) + L'0';
                 } while(d /= 10);
@@ -46,7 +49,7 @@ int printf(CHAR16 *s, ...) {
                 break;
             case L'x':
                 i = 0;
-                d = va_arg(ap, int);
+                d = va_arg(ap, unsigned long long);
                 do {
                     num[i++] = sx[d % 16];
                 } while(d /= 16);

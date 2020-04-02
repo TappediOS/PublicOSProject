@@ -1,0 +1,53 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+HEAD             0x0000000000000000 0x00000000000000ff xrw
+BODY             0x0000000000000100 0x0000000008000000 xrw
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000000400000                __image_base__ = 0x400000
+                0x0000000000000000                __dll__ = 0x0
+                0x0000000000400000                __ImageBase = 0x400000
+                0x0000000000001000                __section_alignment__ = 0x1000
+                0x0000000000000200                __file_alignment__ = 0x200
+                0x0000000000000004                __major_os_version__ = 0x4
+                0x0000000000000000                __minor_os_version__ = 0x0
+                0x0000000000000000                __major_image_version__ = 0x0
+                0x0000000000000000                __minor_image_version__ = 0x0
+                0x0000000000000005                __major_subsystem_version__ = 0x5
+                0x0000000000000002                __minor_subsystem_version__ = 0x2
+                0x0000000000000003                __subsystem__ = 0x3
+                0x0000000000200000                __size_of_stack_reserve__ = 0x200000
+                0x0000000000001000                __size_of_stack_commit__ = 0x1000
+                0x0000000000100000                __size_of_heap_reserve__ = 0x100000
+                0x0000000000001000                __size_of_heap_commit__ = 0x1000
+                0x0000000000000000                __loader_flags__ = 0x0
+                0x0000000000000000                __dll_characteristics__ = 0x0
+
+.xdata          0x0000000000000000      0x200
+ .xdata         0x0000000000000000        0xc kernel.obj
+
+.pdata          0x0000000000001000      0x200
+ .pdata         0x0000000000001000        0xc kernel.obj
+
+.rdata          0x0000000000002000      0x200
+ .rdata$zzz     0x0000000000002000       0x40 kernel.obj
+
+.body           0x0000000000000100      0x200
+                0x0000000000000100        0x8 QUAD 0x110010
+ *(.text)
+ *fill*         0x0000000000000108        0x8 
+ .text          0x0000000000000110       0x80 kernel.obj
+                0x0000000000000110                kernel_main
+ *(.rodata*)
+ *(.data*)
+ .data          0x0000000000000190        0x0 kernel.obj
+                0x0000000000000190                __bss_start = .
+ *(.bss)
+ .bss           0x0000000000000190        0x0 kernel.obj
+                0x0000000000000190                __bss_end = .
+LOAD kernel.obj
+OUTPUT(kernel.exe pei-x86-64)
