@@ -1,20 +1,29 @@
 OUTPUT_ARCH(i386:x86-64);
+ENTRY(_start)
 
 MEMORY
 {
-    HEAD(rwx)  : ORIGIN = 0x00,  LENGTH = 0xFF
-    BODY(rwx)  : ORIGIN = 0x100, LENGTH = 128m
+    HEAD(rx) : ORIGIN = 0x000000, LENGTH = 900k
+    BODY(rx) : ORIGIN = 0x110000, LENGTH = 128m
 }
 
 SECTIONS
 {
     .body : {
-        QUAD(0x110010)
-        *(.text)
-        *(.rodata*)
-        *(.data*)
-        __bss_start = .;
+        *(.text.top )
+        *(.text*)
+
+        *(.rodata* )
+
+        *(.data* )
+        
+        *(.rdata* )
+
+        _bss_start = . ;
         *(.bss)
-        __bss_end = .;
+        _bss_end = . ;
+
     } > BODY
+    
+    /DISCARD/ : {*(.eh_frame)}
 }

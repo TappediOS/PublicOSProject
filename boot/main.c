@@ -20,7 +20,7 @@
 #define MEM_DESC_SIZE   4096
 
 typedef struct KernelHeader {
-    char buf[0x100];
+    char buf[0x10FFFF];
 } KernelHeader;
 
 typedef struct GraphicsInfo {
@@ -84,6 +84,7 @@ EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
     }
     printf(L"[Success] Open Protocol of SimpleFileSystem\r\n");
 
+
     Status = SimpleFileSystem->OpenVolume(SimpleFileSystem, &root);
     if (Status != EFI_SUCCESS) {
         printf(L"[Fatal] Open Volume of root Error : %d\r\n", Status);
@@ -115,47 +116,22 @@ EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
     printf(L"FileSize : 0x%x\r\n", FileInfo->FileSize);
     printf(L"FileName : %s\r\n", FileInfo->FileName);
 
-    // allocate buf for the kernel size
-    EFI_PHYSICAL_ADDRESS    KernelFilePointer = 0;
-    UINTN                   KernelFileSize = FileInfo->FileSize;
-
-    // Read the Kernel File Header
-    KernelHeader    header;
-    UINTN           KernelHeaderSize = sizeof(header);
-    Status = kernel->Read(kernel, &KernelHeaderSize, (VOID*)&header);
+    // Read Kernel Main
+    UINTN KernelFileSize = FileInfo->FileSize - KERNEL_ENTRY;
+    Status = kernel->SetPosition(kernel, KERNEL_ENTRY);
     if (Status != EFI_SUCCESS) {
-        printf(L"[Fatal] Kernel Header Read Error : %d\r\n", Status);
+        printf(L"[Fatal] SetPosition\r\n");
         return Status;
     }
-    //
-    // header validation
-    //
-    printf(L"[Success] Kernel Header Read\r\n");
+    printf(L"[Success] SetPosition\r\n");
 
-    // Read Kernel Main
-    KernelFileSize -= KernelHeaderSize;
-    UINT64 *KernelBuffer = NULL;
     Status = kernel->Read(kernel, &KernelFileSize, (VOID*)KERNEL_ENTRY);
     if (Status != EFI_SUCCESS) {
         printf(L"[Fatal] Kernel Main Read Error : %d\r\n", Status);
         return Status;
     }
     printf(L"[Success] Kernel Main Read\r\n");
-/*
-    // print MainKernel head
-    printf(L"[Info]Kernel(Buffer : 0x%x) : ", KernelBuffer);
-    UINTN   i;
-    CHAR8 *p = (CHAR8*) KernelBuffer;
-    for (i = 0; i < 0x10; i++)
-        printf(L"%x ", *p++);
-    printf(L"\r\n");
 
-
-    // Write Kernel to Memory
-    UINT64 *KernelStart = (UINT64 *)KERNEL_ENTRY;
-    gBS->CopyMem(KernelStart, KernelBuffer, KernelFileSize);
-    printf(L"[Success]Kernel Copy Memory\r\n");
-*/
     Status = kernel->Close(kernel);
     if (Status != EFI_SUCCESS) {
         printf(L"[Fatal] Kernel Close Error : %s\r\n", err_msg[Status]);

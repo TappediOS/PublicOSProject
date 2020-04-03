@@ -157,7 +157,10 @@ typedef struct EFI_FILE_PROTOCOL {
     );
     EFI_STATUS      Write;
     EFI_STATUS      GetPosition;
-    EFI_STATUS      SetPosition;
+    EFI_STATUS (*SetPosition) (
+            struct EFI_FILE_PROTOCOL *This,
+            UINT64 Position
+    );
     EFI_STATUS (*GetInfo) (
             struct EFI_FILE_PROTOCOL *This,
             EFI_GUID    *InfomationType,

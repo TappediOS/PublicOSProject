@@ -15,6 +15,7 @@ iINCLUDE	= -I boot/include
 QEMU = qemu-system-x86_64
 BIOS = -bios tools/OVMF.fd
 DRIVE = -drive file=fat:rw:image,format=raw
+MEMORY = -m 6G
 
 COPY = copy
 
@@ -24,5 +25,6 @@ main.efi: boot/main.c $(fUEFI) $(fINCLUDE) Makefile
 	$(COPY) main.efi image\EFI\BOOT\BOOTX64.EFI
 
 run:
-	$(QEMU) $(BIOS) $(DRIVE)
+	$(COPY) kernel\kernel.bin image
+	$(QEMU) $(BIOS) $(DRIVE) $(MEMORY)
 

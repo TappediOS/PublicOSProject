@@ -3,23 +3,14 @@
 //  Update  develop2.0
 // ****************************************
 
-#define GRAPHICS_INFO 0x100000
-
-typedef struct GraphicsInfo {
-    unsigned long *vram;
-    unsigned short int width;
-    unsigned short int height;
-} GraphicsInfo;
+#include "graphic/graphic.h"
 
 int kernel_main() {
-    GraphicsInfo *gInfo = (GraphicsInfo*)GRAPHICS_INFO;
-    int x, y;
-    for (y = 0; y < gInfo->height; y++) {
-        for (x = 0; x < gInfo->width; x++) {
-            gInfo->vram[y * gInfo->width + x] = 0x00FFFF;
-        }
-    }
+    drawRectangle(0, 0, gInfo->width, gInfo->height, 0x00000000);
 
+    drawString(20, 0, "Start", 0xFFFFFF);
+    drawString(20, 20, "Hello, World!!", 0xFFFFFF);
+    drawString(20, 40, "Test String", 0xFFFFFF);
 
     while (1);
     return 0;
