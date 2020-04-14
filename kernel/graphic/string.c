@@ -3,13 +3,12 @@
 //  Update  develop2.1
 // *******************************
 
-#ifndef __GRAPHIC_STRING__
-#define __GRAPHIC_STRING__
+#include <graphic/graphic.h>
 
 #include "font.h"
 
-int drawCharacter(int sx, int sy, char c, unsigned long color) {
-    int i, v;
+int drawCharacter(const unsigned int sx, const unsigned int sy, const unsigned char c, const unsigned long color) {
+    unsigned int i, v;
     for (i = 0; i < 16; i++) {
         v = _fonts[c - 0x20][i];
         if (v & 0x80)   gInfo->vram[(sy+i) * gInfo->width + sx   ] = color;
@@ -24,12 +23,13 @@ int drawCharacter(int sx, int sy, char c, unsigned long color) {
     return 0;
 }
 
-int drawString(int sx, int sy, char *s, unsigned long color) {
-    int i;
-    for (i = 0; s[i] != '\0'; i++) {
-        drawCharacter(sx + i*9, sy, s[i], color);
-    }
+int drawString(const unsigned int sx, const unsigned int sy, const char *s, const unsigned long color) {
+    unsigned int i;
+    do {
+        drawCharacter(sx + i*9, sy, *s, color);
+        i++;
+        s++;
+    } while(*s);
     return 0;
 }
 
-#endif  // __GRAPHIC_STRING__
