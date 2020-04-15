@@ -1,10 +1,24 @@
 // **************************************
 //  include - types.h
-//  Update  develop3.0
+//  Update  develop3.1
 // **************************************
 
 #ifndef __TYPES__
 #define __TYPES__
+
+// event
+typedef struct Event {
+    unsigned int id;
+    unsigned long long low;
+    unsigned long long high;
+} Event;
+
+typedef struct EventMan {
+    Event event[64];
+    unsigned char size;
+    unsigned char read;
+    unsigned char write;
+} EventMan;
 
 // graphics
 typedef struct GraphicInfo {

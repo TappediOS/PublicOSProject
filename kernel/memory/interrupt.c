@@ -3,6 +3,7 @@
 //  Update  develop3.0
 // *************************************
 
+#include <event/event.h>
 #include <memory/interrupt.h>
 #include <util/stdio.h>
 #include <graphic/graphic.h>
@@ -16,8 +17,14 @@ void emptyHandler(void) {
 }
 
 void keyboardHandler(void) {
-    io_out8(PIC0_OCW2, PIC_EOI);
-    io_out8(PIC1_OCW2, PIC_EOI);
-    drawString(5, 50, "Keyboard Interrupt", 0xFFFFFF);
+    unsigned char data;
+    data = io_in8(0x60);
+    if (data > 0x80) {
+        // putEvent(&event, EVENT_KEYRELEASED, (unsigned long long)(data - 0x80), 0x00);
+    }
+    else {
+        putEvent(&event, EVENT_KEYPRESSED, (unsigned long long)data, 0x00);
+    }
+    io_out8(PIC0_OCW2, 0x61);
 }
 

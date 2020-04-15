@@ -26,6 +26,7 @@
 // debug
 extern unsigned char mflag;
 extern char mes[128];
+extern EventMan event;
 
 void emptyHandler(void);
 
