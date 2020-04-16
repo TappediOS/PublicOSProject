@@ -6,20 +6,6 @@
 #ifndef __TYPES__
 #define __TYPES__
 
-// event
-typedef struct Event {
-    unsigned int id;
-    unsigned long long low;
-    unsigned long long high;
-} Event;
-
-typedef struct EventMan {
-    Event event[64];
-    unsigned char size;
-    unsigned char read;
-    unsigned char write;
-} EventMan;
-
 // graphics
 typedef struct GraphicInfo {
     unsigned long *vram;
@@ -44,5 +30,18 @@ typedef struct GATE_DESCRIPTOR {
     unsigned int   offset_63_32;
     unsigned int   _reserved;
 } GATE_DESCRIPTOR;
+
+
+// util/fifo.c
+typedef struct nFIFO {
+    int low;
+    int high;
+} nFIFO;
+
+typedef struct FIFO {
+    nFIFO nfifo[64];
+    unsigned char read;
+    unsigned char write;
+} FIFO;
 
 #endif  // __TYPES__

@@ -29,3 +29,10 @@ void waitKeyboardSendReady(void) {
         }
     }
 }
+
+void initMouse(void) {
+    waitKeyboardSendReady();
+    io_out8(0x64, 0xD4);
+    waitKeyboardSendReady();
+    io_out8(0x60, 0xF4);
+}

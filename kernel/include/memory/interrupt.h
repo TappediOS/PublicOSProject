@@ -8,6 +8,7 @@
 #ifndef __INTERRUPT__
 #define __INTERRUPT__
 
+// port define
 #define PIC0_ICW1 0x0020
 #define PIC0_OCW2 0x0020
 #define PIC0_IMR 0x0021
@@ -23,14 +24,19 @@
 
 #define PIC_EOI 0x20
 
-// debug
-extern unsigned char mflag;
-extern char mes[128];
-extern EventMan event;
+
+// interrupt define
+#define INTERRUPT_NONE      0
+#define INTERRUPT_TIME      1
+#define INTERRUPT_KEYBOARD  2
+
+#define INTERRUPT_MOUSE     3
+
+extern FIFO fifo;
 
 void emptyHandler(void);
 
-void timerHandler(void);
 void keyboardHandler(void);
+void mouseHandler(void);
 
 #endif  // __INTERRUPT__

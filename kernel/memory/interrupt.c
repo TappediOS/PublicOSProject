@@ -3,11 +3,11 @@
 //  Update  develop3.0
 // *************************************
 
-#include <event/event.h>
 #include <memory/interrupt.h>
 #include <util/stdio.h>
 #include <graphic/graphic.h>
 #include <util/asmfunc.h>
+#include <util/fifo.h>
 
 void emptyHandler(void) {
     drawString(10, 50, "HLT", 0xFFFFFF);
@@ -19,12 +19,14 @@ void emptyHandler(void) {
 void keyboardHandler(void) {
     unsigned char data;
     data = io_in8(0x60);
-    if (data > 0x80) {
-        // putEvent(&event, EVENT_KEYRELEASED, (unsigned long long)(data - 0x80), 0x00);
-    }
-    else {
-        putEvent(&event, EVENT_KEYPRESSED, (unsigned long long)data, 0x00);
-    }
+    putFIFO(&fifo, INTERRUPT_KEYBOARD, (int)data);
     io_out8(PIC0_OCW2, 0x61);
 }
 
+void mouseHandler(void) {
+    unsigned char data;
+    data = io_in8(0x60);
+    putFIFO(&fifo, INTERRUPT_MOUSE, (int)data);
+    io_out8(PIC1_OCW2, 0x64);
+    io_out8(PIC0_OCW2, 0x62);
+}

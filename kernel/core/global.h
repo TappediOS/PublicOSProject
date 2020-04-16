@@ -16,6 +16,6 @@ GraphicInfo *gInfo = (GraphicInfo *)0x100000;
 SEGMENT_DESCRIPTOR  *GDT = (SEGMENT_DESCRIPTOR *)0x0080;
 GATE_DESCRIPTOR     *IDT = (GATE_DESCRIPTOR *)0x13000;
 
-// event
-EventMan event;
+// fifo
+FIFO fifo;
 

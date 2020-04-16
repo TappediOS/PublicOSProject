@@ -15,4 +15,7 @@ void initTimer(void);
 void initKeyBoard(void);
 void waitKeyboardSendReady(void);
 
+// mouse
+void initMouse(void);
+
 #endif  // __DEVICE__

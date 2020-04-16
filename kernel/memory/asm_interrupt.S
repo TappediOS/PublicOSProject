@@ -6,6 +6,7 @@
 extern emptyHandler
 extern timerHandler
 extern keyboardHandler
+extern mouseHandler
 
 global asmEmptyHandler
 asmEmptyHandler:
@@ -43,7 +44,22 @@ asmKeyboardHandler:
     pop     rax
     iretq
 
+global asmMouseHandler
+asmMouseHandler:
+    push    rax
+    push    rcx
+    push    rdx
+    push    rbx
+    push    rbp
+    push    rsi
+    push    rdi
+    call    mouseHandler
+    pop     rdi
+    pop     rsi
+    pop     rbp
+    pop     rbx
+    pop     rdx
+    pop     rcx
+    pop     rax
+    iretq
 
-loop_hlt:
-    hlt
-    jmp     loop_hlt

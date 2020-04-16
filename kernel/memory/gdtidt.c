@@ -30,6 +30,7 @@ void initIdt(void) {
     for (i = 0; i < 256; i++)
         IDT[i] = makeGateDescriptor((unsigned long long)asmEmptyHandler);
     IDT[0x21] = makeGateDescriptor((unsigned long long)asmKeyboardHandler);
+    IDT[0x2C] = makeGateDescriptor((unsigned long long)asmMouseHandler);
     loadIdt();
 }
 
