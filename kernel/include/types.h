@@ -1,10 +1,19 @@
 // **************************************
 //  include - types.h
-//  Update  develop3.1
+//  Update  develop3.3
 // **************************************
 
 #ifndef __TYPES__
 #define __TYPES__
+
+// console
+#define CONSOLE_ROW     80
+#define CONSOLE_LINE    32
+
+typedef struct Console {
+    char buf[CONSOLE_ROW * CONSOLE_LINE];
+    unsigned int ptr;
+} Console;
 
 // graphics
 typedef struct GraphicInfo {

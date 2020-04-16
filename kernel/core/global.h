@@ -19,3 +19,6 @@ GATE_DESCRIPTOR     *IDT = (GATE_DESCRIPTOR *)0x13000;
 // fifo
 FIFO fifo;
 
+// console
+Console console;
+

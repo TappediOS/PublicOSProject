@@ -5,7 +5,8 @@
 CFLAGS = -Wall -Wextra -O0 -nostdlib -fno-builtin -fno-common -e kernel_init -I include
 LDFLAGS = -T scripts/kernel.ld
 
-OBJS = 	core\entry.obj core\kernel.obj \
+OBJS = 	console\console.obj	\
+		core\entry.obj core\kernel.obj \
 		graphic\init.obj graphic\simple.obj graphic\string.obj \
 		memory\asm_gdtidt.obj memory\gdtidt.obj memory\interrupt.obj memory\asm_interrupt.obj memory\device.obj \
 		util\asmfunc.obj util\stdio.obj util\fifo.obj
