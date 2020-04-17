@@ -15,6 +15,7 @@ extern GraphicInfo *gInfo;
 void initGraphic(void);
 
 // simple.c
+int drawPoint(const unsigned int sx, const unsigned int sy, const unsigned long color);
 int drawRectangle(const unsigned int sx, const unsigned int sy, const unsigned int width, const unsigned int height, const unsigned long color);
 int drawCircle(const unsigned int cx, const unsigned int cy, const unsigned int r, const unsigned long color);
 

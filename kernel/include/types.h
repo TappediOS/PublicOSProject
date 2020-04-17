@@ -1,6 +1,6 @@
 // **************************************
 //  include - types.h
-//  Update  develop3.3
+//  Update  develop3.4
 // **************************************
 
 #ifndef __TYPES__
@@ -14,6 +14,14 @@ typedef struct Console {
     char buf[CONSOLE_ROW * CONSOLE_LINE];
     unsigned int ptr;
 } Console;
+
+
+// device - mouse
+typedef struct MouseInfo {
+    short int mx, my;
+    char data[3];
+    char step;
+} MouseInfo;
 
 // graphics
 typedef struct GraphicInfo {

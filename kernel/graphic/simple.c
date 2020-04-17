@@ -5,6 +5,11 @@
 
 #include <graphic/graphic.h>
 
+int drawPoint(const unsigned int sx, const unsigned int sy, const unsigned long color) {
+    gInfo->vram[sy * gInfo->width + sx] = color;
+    return 0;
+}
+
 int drawRectangle(const unsigned int sx, const unsigned int sy,
         const unsigned int width, const unsigned int height,
         const unsigned long color) {

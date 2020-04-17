@@ -7,6 +7,7 @@ LDFLAGS = -T scripts/kernel.ld
 
 OBJS = 	console\console.obj	\
 		core\entry.obj core\kernel.obj \
+		device\mouse.obj	\
 		graphic\init.obj graphic\simple.obj graphic\string.obj \
 		memory\asm_gdtidt.obj memory\gdtidt.obj memory\interrupt.obj memory\asm_interrupt.obj memory\device.obj \
 		util\asmfunc.obj util\stdio.obj util\fifo.obj

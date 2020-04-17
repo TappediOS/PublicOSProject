@@ -5,9 +5,8 @@
 
 #include <types.h>
 
-// message
-unsigned char mflag = 0;
-char mes[128];
+// device - mouse.c
+MouseInfo mouse;
 
 // graphic
 GraphicInfo *gInfo = (GraphicInfo *)0x100000;

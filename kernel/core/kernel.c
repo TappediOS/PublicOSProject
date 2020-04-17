@@ -6,6 +6,7 @@
 #include <types.h>
 
 #include <console/console.h>
+#include <device/mouse.h>
 #include <graphic/graphic.h>
 #include <memory/gdtidt.h>
 #include <memory/device.h>
@@ -39,10 +40,13 @@ void kernel_main() {
     drawRectangle(10, 10, CONSOLE_ROW * 8 + 2, CONSOLE_LINE * 16 + 2, 0xFFFFFF);
     drawConsole(&console);
 
+    initMouseInfo(&mouse);
+
     initFIFO(&fifo);
     nFIFO f;
 
     char str[256];
+    int ret = 0;
 
 
     while (1) {
@@ -56,9 +60,17 @@ void kernel_main() {
             drawConsole(&console);
             break;
         case INTERRUPT_MOUSE:
-            sprintf(str, "MOUSE : %x", f.high);
-            inputConsole(&console, str);
-            drawConsole(&console);
+            inputMouseInfo(&mouse, (char)(f.high));
+            ret = decodeMouseInfo(&mouse);
+            if (ret == 0xFF) {
+                ;
+            }
+            else {
+                sprintf(str, "MOUSE : %x", ret);
+                inputConsole(&console, str);
+                drawConsole(&console);
+                drawMouse(&mouse);
+            }
             break;
         default:
             sprintf(str, "UNDEFINED EVENT");
