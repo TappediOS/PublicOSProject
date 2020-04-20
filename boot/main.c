@@ -176,6 +176,23 @@ EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
         printf(L"mapSize   : 0x%x\r\n", mapSize);
         printf(L"mapKey    : 0x%x\r\n", mapKey);
 
+        EFI_MEMORY_DESCRIPTOR *p = (EFI_MEMORY_DESCRIPTOR *)memoryMap;
+        UINTN m;
+        UINT64 sum = 0;
+        printf(L"-----  Memory Map  -----\r\n");
+        printf(L"m  type  physicalstart  numberofpages  sum  attr\r\n");
+        for (m = 0; m < mapSize / descSize; m++) {
+            printf(L"[%d]  ", m);
+            printf(L"0x%x  ", p->Type);
+            printf(L"0x%x - 0x%x ", p->PhysicalStart);
+            printf(L"0x%x  ", p->NumberOfPages);
+            printf(L"0x%x  ", sum);
+            printf(L"0x%x  ", p->Attribute);
+            printf(L"\r\n");
+            sum += p->PhysicalStart;
+            p = (EFI_MEMORY_DESCRIPTOR *)((unsigned char *)p + descSize);
+        }
+
         Status = gBS->ExitBootServices(ImageHandle, mapKey);
         if (Status != EFI_SUCCESS) {
             printf(L"[Fatal] ExitBootServices : %s(%d)\r\n\r\n", err_msg[(Status & 0xFF)], (Status & 0xFF));
