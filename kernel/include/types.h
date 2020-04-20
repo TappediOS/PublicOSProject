@@ -23,6 +23,7 @@ typedef struct MouseInfo {
     char step;
 } MouseInfo;
 
+
 // graphics
 typedef struct GraphicInfo {
     unsigned long *vram;
@@ -48,6 +49,16 @@ typedef struct GATE_DESCRIPTOR {
     unsigned int   _reserved;
 } GATE_DESCRIPTOR;
 
+// time
+typedef struct Time {
+    unsigned int year;
+    unsigned char month;
+    unsigned char day;
+    unsigned char week;
+    unsigned char hour;
+    unsigned char minute;
+    unsigned char second;
+} Time;
 
 // util/fifo.c
 typedef struct nFIFO {
