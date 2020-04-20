@@ -47,11 +47,6 @@ void initPic(void) {
     io_out8(PIC1_ICW2, 0x28);
     io_out8(PIC1_ICW3, 2);
     io_out8(PIC1_ICW4, 0x01);
-
-    char str[256];
-    sprintf(str, "initPIC master : %x", io_in8(PIC1_IMR));
-    drawString(10, 75, str, 0xFFFFFF);
-    return;
 }
 
 GATE_DESCRIPTOR makeGateDescriptor(unsigned long long addr) {

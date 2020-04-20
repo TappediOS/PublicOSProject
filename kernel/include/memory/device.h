@@ -8,9 +8,6 @@
 #ifndef __DEVICE__
 #define __DEVICE__
 
-// timer
-void initTimer(void);
-
 // keyboard
 void initKeyBoard(void);
 void waitKeyboardSendReady(void);

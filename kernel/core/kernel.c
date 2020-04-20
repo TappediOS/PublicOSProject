@@ -11,6 +11,7 @@
 #include <memory/gdtidt.h>
 #include <memory/device.h>
 #include <memory/interrupt.h>
+#include <time/time.h>
 #include <util/stdio.h>
 #include <util/asmfunc.h>
 #include <util/fifo.h>
@@ -28,6 +29,11 @@ void kernel_init() {
 }
 
 void kernel_main() {
+
+    initConsole(&console);
+    drawRectangle(10, 10, CONSOLE_ROW * 8 + 2, CONSOLE_LINE * 16 + 2, 0xFFFFFF);
+    drawConsole(&console);
+
     initIdt();
     initPic();
     initKeyBoard();
@@ -36,18 +42,19 @@ void kernel_main() {
     io_out8(PIC1_IMR, 0xEF);
     io_sti();
 
-    initConsole(&console);
-    drawRectangle(10, 10, CONSOLE_ROW * 8 + 2, CONSOLE_LINE * 16 + 2, 0xFFFFFF);
-    drawConsole(&console);
-
     initMouseInfo(&mouse);
 
-    initFIFO(&fifo);
     nFIFO f;
+    initFIFO(&fifo);
 
     char str[256];
     int ret = 0;
+    Time t;
 
+    t = getTime();
+    sprintf(str, "RTC : %d:%d:%d", t.hour, t.minute, t.second);
+    inputConsole(&console, str);
+    drawConsole(&console);
 
     while (1) {
         f = getFIFO(&fifo);
@@ -63,7 +70,11 @@ void kernel_main() {
             inputMouseInfo(&mouse, (char)(f.high));
             ret = decodeMouseInfo(&mouse);
             if (ret == 0xFF) {
-                ;
+                ;       // error
+            }
+            else if (ret == 0x00) {
+                drawConsole(&console);
+                drawMouse(&mouse);
             }
             else {
                 sprintf(str, "MOUSE : %x", ret);

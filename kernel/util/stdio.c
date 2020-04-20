@@ -26,7 +26,6 @@ int sprintf(char *s, const char *t, ...) {
         case '%':
             t++;
             switch(*t) {
-                /*
             case 'd':
                 i = 0;
                 d = va_arg(ap, int);
@@ -40,7 +39,6 @@ int sprintf(char *s, const char *t, ...) {
                 while(i--)
                     *s++ = num[i];
                 break;
-                */
 
             case 'c':
                 *s++ = va_arg(ap, int);

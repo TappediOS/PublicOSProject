@@ -9,7 +9,6 @@
 #define __ASM_INTERRUPT__
 
 extern void asmEmptyHandler(void);
-extern void asmTimerHandler(void);
 extern void asmKeyboardHandler(void);
 extern void asmMouseHandler(void);
 

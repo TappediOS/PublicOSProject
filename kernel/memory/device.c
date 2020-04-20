@@ -9,7 +9,10 @@
 #include <util/asmfunc.h>
 
 // debug ->
+#include <util/stdio.h>
 #include <graphic/graphic.h>
+extern Console console;
+char str[64];
 // <- debug
 
 void initKeyBoard(void) {
@@ -17,9 +20,6 @@ void initKeyBoard(void) {
     io_out8(0x0064, 0x60);
     waitKeyboardSendReady();
     io_out8(0x0060, 0x47);
-
-    drawString(5, 55, "initialize Keyboard", 0xFFFFFF);
-    return;
 }
 
 void waitKeyboardSendReady(void) {

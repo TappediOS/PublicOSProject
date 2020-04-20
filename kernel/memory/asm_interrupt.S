@@ -1,10 +1,9 @@
 ; ************************************
 ;   memory - asm_interrupt.S
-;   Update  develop3.0
+;   Update  develop3.4
 ; ************************************
 
 extern emptyHandler
-extern timerHandler
 extern keyboardHandler
 extern mouseHandler
 
