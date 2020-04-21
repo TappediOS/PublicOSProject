@@ -24,7 +24,7 @@ int drawCharacter(const unsigned int sx, const unsigned int sy, const unsigned c
 }
 
 int drawString(const unsigned int sx, const unsigned int sy, const char *s, const unsigned long color) {
-    unsigned int i;
+    unsigned int i = 0;
     do {
         drawCharacter(sx + i*9, sy, *s, color);
         i++;

@@ -1,6 +1,6 @@
 // ***********************************
 //  include - memory - asm_interrupt.h
-//  Update  develop3.0
+//  Update  develop3.6
 // ***********************************
 
 #include <types.h>
@@ -9,6 +9,7 @@
 #define __ASM_INTERRUPT__
 
 extern void asmEmptyHandler(void);
+extern void asmTimerHandler(void);
 extern void asmKeyboardHandler(void);
 extern void asmMouseHandler(void);
 

@@ -27,7 +27,7 @@
 
 // interrupt define
 #define INTERRUPT_NONE      0
-#define INTERRUPT_TIME      1
+#define INTERRUPT_TIMER     1
 #define INTERRUPT_KEYBOARD  2
 
 #define INTERRUPT_MOUSE     3
@@ -36,6 +36,7 @@ extern FIFO fifo;
 
 void emptyHandler(void);
 
+void timerHandler(void);
 void keyboardHandler(void);
 void mouseHandler(void);
 

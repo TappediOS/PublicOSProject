@@ -53,7 +53,7 @@ void clearConsole(Console *cons) {
 }
 
 void drawConsole(Console *cons) {
-    const int sx = 10, sy = 10;
+    const int sx = 10, sy = 20;
 
     drawRectangle(sx + 1, sy + 1, CONSOLE_ROW * 8, CONSOLE_LINE * 16, 0x000000);
 

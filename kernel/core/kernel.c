@@ -31,14 +31,15 @@ void kernel_init() {
 void kernel_main() {
 
     initConsole(&console);
-    drawRectangle(10, 10, CONSOLE_ROW * 8 + 2, CONSOLE_LINE * 16 + 2, 0xFFFFFF);
+    drawRectangle(10, 20, CONSOLE_ROW * 8 + 2, CONSOLE_LINE * 16 + 2, 0xFFFFFF);
     drawConsole(&console);
 
     initIdt();
     initPic();
+    initTimer();
     initKeyBoard();
     initMouse();
-    io_out8(PIC0_IMR, 0xF9);
+    io_out8(PIC0_IMR, 0xF8);
     io_out8(PIC1_IMR, 0xEF);
     io_sti();
 
@@ -50,16 +51,21 @@ void kernel_main() {
     char str[256];
     int ret = 0;
     Time t;
-
-    t = getTime();
-    sprintf(str, "RTC : %d:%d:%d", t.hour, t.minute, t.second);
-    inputConsole(&console, str);
-    drawConsole(&console);
+    int cnt = 0, sec = 0;
 
     while (1) {
         f = getFIFO(&fifo);
         switch(f.low) {
         case INTERRUPT_NONE:
+            break;
+        case INTERRUPT_TIMER:
+            if (cnt++ > 50) {
+                cnt = 0;
+                t = getTime();
+                sprintf(str, "RTC : %d:%d:%d", t.hour, t.minute, t.second);
+                drawRectangle(20, 550, 200, 25, 0xFF0000);
+                drawString(22, 552, str, 0xFFFF00);
+            }
             break;
         case INTERRUPT_KEYBOARD:
             sprintf(str, "KEYBOARD : 0x%x", f.high);

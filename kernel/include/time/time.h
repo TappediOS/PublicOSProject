@@ -8,7 +8,10 @@
 #ifndef __dTIME__
 #define __dTIME__       // __TIME__は使えない
 
+int updateRtc();
+
 Time getTime(void);
-int  getTimeData(char addr);
+unsigned char getTimeData(int addr);
+unsigned char changeTimeData(char data);
 
 #endif  // __dTIME__
