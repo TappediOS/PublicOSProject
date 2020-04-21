@@ -15,6 +15,13 @@ extern Console console;
 char str[64];
 // <- debug
 
+// 11932 -> 100Hz
+void initTimer(void) {
+    io_out8(PIT_CTRL, 0x34);
+    io_out8(PIT_CNT0, 0x9C);
+    io_out8(PIT_CNT0, 0x2E);
+}
+
 void initKeyBoard(void) {
     waitKeyboardSendReady();
     io_out8(0x0064, 0x60);

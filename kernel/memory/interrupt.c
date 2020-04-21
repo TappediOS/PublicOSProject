@@ -16,6 +16,11 @@ void emptyHandler(void) {
     }
 }
 
+void timerHandler(void) {
+    putFIFO(&fifo, INTERRUPT_TIMER, 0x00);
+    io_out8(PIC0_OCW2, 0x60);
+}
+
 void keyboardHandler(void) {
     unsigned char data;
     data = io_in8(0x60);
