@@ -14,5 +14,6 @@ void nLineConsole(Console *cons);
 void slideConsole(Console *cons);
 void clearConsole(Console *cons);
 void drawConsole(Console *cons);
+void printConsole(Console *cons, char *s);
 
 #endif  // __CONSOLE__

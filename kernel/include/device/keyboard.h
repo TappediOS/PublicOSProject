@@ -1,0 +1,41 @@
+// *********************************************
+//  include - device - keyboard.h
+//  Update  develop4.0
+// *********************************************
+
+#include <types.h>
+
+#ifndef __DEVICE_KEYBOARD__
+#define __DEVICE_KEYBOARD__
+
+enum KeyCode {
+    KEY_NULL,   VK_ESC_DOWN, VK_1_DOWN, VK_2_DOWN, VK_3_DOWN, KEY_4_DOWN, VK_5_DOWN, VK_6_DOWN, VK_7_DOWN,
+    VK_8_DOWN,  VK_9_DOWN,  VK_0_DOWN,  VK_OEM_MINUS_DOWN, VK_OEM_SEMCORON_DOWN, VK_BACK_DOWN, VK_TAB_DOWN,
+
+    VK_Q_DOWN, VK_W_DOWN, VK_E_DOWN, VK_R_DOWN, VK_T_DOWN, VK_Y_DOWN, VK_U_DOWN, VK_I_DOWN, VK_O_DOWN,
+    VK_P_DOWN, VK_OEM_4_DOWN, VK_OEM_6_DOWN, VK_RETURN_DOWN, VK_CONTROL_R_DOWN, VK_A_DOWN, VK_S_DOWN,
+
+    VK_D_DOWN, VK_F_DOWN, VK_G_DOWN, VK_H_DOWN, VK_J_DOWN, VK_K_DOWN, VK_L_DOWN, VK_CORON_DOWN,
+    VK_OEM_7_DOWN, VK_OEM_3_DOWN, VK_SHIFT_R_DOWN, VK_OEM_5_DOWN, VK_Z_DOWN, VK_X_DOWN, VK_C_DOWN, VK_V_DOWN,
+
+    VK_B_DOWN, VK_N_DOWN, VK_M_DOWN, VK_OEM_COMMA_DOWN, VK_OEM_PERIOD_DOWN, VK_OEM_2_DOWN, VK_SHIFT_L_DOWN, VK_MULTIPLY_DOWN,
+    VK_MENU_DOWN, VK_SPACE_DOWN, VK_NUL2, VK_F1_DOWN, VK_F2_DOWN, VK_F3_DOWN, VK_F4_DOWN, VK_F5_DOWN,
+
+    VK_F6_DOWN, VK_F7_DOWN, VK_F8_DOWN, VK_F9_DOWN, VK_F10_DOWN, VK_NUL3, VK_NUL4, VK_NUMPAD7_DOWN, VK_NUMPAD8_DOWN,
+    VK_NUMPAD9_DOWN, VK_SUBTRACT_DOWN, VK_NUMPAD4_DOWN, VK_NUMPAD5_DOWN, VK_NUMPAD6_DOWN, VK_ADD_DOWN, VK_NUMPAD1_DOWN,
+
+    VK_NUMPAD2_DOWN, VK_NUMPAD3_DOWN, VK_NUMPAD0_DOWN, VK_DECIMAL_DOWN
+};
+
+void initKbdInfo(KeyboardInfo *kbdInfo);
+enum KeyCode decodeKbdInfo(KeyboardInfo *kbdInfo);
+enum KeyCode keyDecode(unsigned char data);
+unsigned char getKey(enum KeyCode key);
+
+
+// next E0
+// VK_ALT_R
+// VK_HOME -> 0x47 0xE0
+//
+
+#endif  // __DEVICE_KEYBOARD__

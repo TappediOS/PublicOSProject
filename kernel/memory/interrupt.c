@@ -9,13 +9,6 @@
 #include <util/asmfunc.h>
 #include <util/fifo.h>
 
-void emptyHandler(void) {
-    drawString(10, 50, "HLT", 0xFFFFFF);
-    while(1) {
-        asm("hlt");
-    }
-}
-
 void timerHandler(void) {
     putFIFO(&fifo, INTERRUPT_TIMER, 0x00);
     io_out8(PIC0_OCW2, 0x60);

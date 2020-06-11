@@ -3,27 +3,9 @@
 ;   Update  develop3.6
 ; ************************************
 
-extern emptyHandler
 extern timerHandler
 extern keyboardHandler
 extern mouseHandler
-
-global asmEmptyHandler
-asmEmptyHandler:
-    push    rax
-    push    rcx
-    push    rdx
-    push    rbp
-    push    rsi
-    push    rdi
-    call    emptyHandler
-    pop     rdi
-    pop     rsi
-    pop     rbp
-    pop     rdx
-    pop     rcx
-    pop     rax
-    iretq
 
 global asmTimerHandler
 asmTimerHandler:

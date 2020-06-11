@@ -68,6 +68,8 @@ void drawConsole(Console *cons) {
     }
 }
 
-
-
+void printConsole(Console *cons, char *s) {
+    inputConsole(cons, s);
+    drawConsole(cons);
+}
 

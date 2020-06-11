@@ -13,6 +13,11 @@ io_sti:
     sti
     ret
 
+global io_hlt
+io_hlt:
+    hlt
+    ret
+
 global io_in8
 io_in8:
     mov     edx, ecx
