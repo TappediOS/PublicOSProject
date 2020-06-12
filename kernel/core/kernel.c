@@ -11,6 +11,7 @@
 #include <memory/gdtidt.h>
 #include <memory/device.h>
 #include <memory/interrupt.h>
+#include <memory/paging.h>
 #include <time/time.h>
 #include <util/stdio.h>
 #include <util/asmfunc.h>
@@ -33,6 +34,7 @@ void kernel_main() {
     initConsole(&console);
     drawRectangle(10, 20, CONSOLE_ROW * 8 + 2, CONSOLE_LINE * 16 + 2, 0xFFFFFF);
     drawConsole(&console);
+    initPaging();
 
     initIdt();
     initPic();
@@ -53,6 +55,26 @@ void kernel_main() {
     Time t;
     int cnt = 0, sec = 0;
 
+    sprintf(str, "cr0 : %b", getCR0());
+    printConsole(&console, str);
+
+    unsigned long long int *mem = (unsigned long long int *)(0x2000);
+    unsigned long long int *mem2 = (unsigned long long int *)(getCR3());
+
+    sprintf(str, "[0x%x] : 0x%x   [0x%x] : 0x%x", mem, *mem, mem2, *mem2);
+    mem += 512; mem2 += 512;
+    printConsole(&console, str);
+
+    sprintf(str, "[0x%x] : 0x%x   [0x%x] : 0x%x", mem, *mem, mem2, *mem2);
+    mem += 512; mem2 += 512;
+    printConsole(&console, str);
+
+    sprintf(str, "cr3 : %x", getCR3());
+    printConsole(&console, str);
+
+    sprintf(str, "cr4 : %b", getCR4());
+    printConsole(&console, str);
+
     while (1) {
         f = getFIFO(&fifo);
         switch(f.low) {
@@ -68,7 +90,8 @@ void kernel_main() {
             }
             break;
         case INTERRUPT_KEYBOARD:
-            sprintf(str, "KEYBOARD : 0x%x", f.high);
+            sprintf(str, "[0x%x] : 0x%x   [0x%x] : 0x%x", mem, *mem, mem2, *mem2);
+            mem++; mem2++;
             inputConsole(&console, str);
             drawConsole(&console);
             break;

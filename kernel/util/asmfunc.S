@@ -18,6 +18,39 @@ io_hlt:
     hlt
     ret
 
+global getCR0
+getCR0:
+    mov     rax, cr0
+    ret
+
+global setCR0
+setCR0:
+    mov     rax, rcx
+    mov     cr0, rax
+    ret
+
+global getCR3
+getCR3:
+    mov     rax, cr3
+    ret
+
+global setCR3
+setCR3:
+    mov     rax, rcx
+    mov     cr3, rax
+    ret
+
+global getCR4
+getCR4:
+    mov     rax, cr4
+    ret
+
+global setCR4
+setCR4:
+    mov     rax, rcx
+    mov     cr4, rax
+    ret
+
 global io_in8
 io_in8:
     mov     edx, ecx

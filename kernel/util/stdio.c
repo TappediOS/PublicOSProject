@@ -12,6 +12,7 @@
 int sprintf(char *s, const char *t, ...) {
     int ret = 0;
     int i, d;
+    unsigned long long int lld;
     unsigned int xd;
     char num[STDIO_BUF_LENGTH], *c;
     char sx[] = {
@@ -51,6 +52,19 @@ int sprintf(char *s, const char *t, ...) {
                     num[i++] = sx[xd % 16];
                 } while(xd /= 16);
                 while(i--)
+                    *s++ = num[i];
+                break;
+
+            case 'b':
+                i = 0;
+                lld = va_arg(ap, unsigned long long int);
+                do {
+                    if (lld & 0x01)
+                        num[i++] = '1';
+                    else
+                        num[i++] = '0';
+                } while(lld /= 2);
+                while (i--)
                     *s++ = num[i];
                 break;
 
