@@ -15,6 +15,8 @@ GraphicInfo *gInfo = (GraphicInfo *)0x100000;
 SEGMENT_DESCRIPTOR  *GDT = (SEGMENT_DESCRIPTOR *)0x0900;
 GATE_DESCRIPTOR     *IDT = (GATE_DESCRIPTOR *)0x1000;
 
+// paging
+
 // fifo
 FIFO fifo;
 

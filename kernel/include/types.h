@@ -6,6 +6,8 @@
 #ifndef __TYPES__
 #define __TYPES__
 
+#define NULL    0
+
 // console
 #define CONSOLE_ROW     80
 #define CONSOLE_LINE    32
