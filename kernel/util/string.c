@@ -3,6 +3,15 @@
 //  Update  develop  4.0
 // ********************************************
 
+void *memset(void *s, int c, int n) {
+    unsigned char *tmp = s;
+    unsigned char ch = c;
+    unsigned int i;
+    for (i = 0; i < n; i++) {
+        tmp[i] = ch;
+    }
+    return s;
+}
 
 int strlen(char *s) {
     unsigned int i = 0;

@@ -7,6 +7,8 @@
 
 #include <console/console.h>
 #include <device/mouse.h>
+#include <device/ahci.h>
+#include <device/sata.h>
 #include <graphic/graphic.h>
 #include <memory/gdtidt.h>
 #include <memory/device.h>
@@ -34,8 +36,10 @@ void kernel_main() {
     initConsole(&console);
     drawRectangle(10, 20, CONSOLE_ROW * 8 + 2, CONSOLE_LINE * 16 + 2, 0xFFFFFF);
     drawConsole(&console);
-    initPaging();
+    detectPciDevices();
+    checkSataPort();
 
+    initPaging();
     initIdt();
     initPic();
     initTimer();
@@ -70,9 +74,7 @@ void kernel_main() {
             }
             break;
         case INTERRUPT_KEYBOARD:
-            sprintf(str, "keyboard interrupt");
-            inputConsole(&console, str);
-            drawConsole(&console);
+            printConsole(&console, "Keyboard Interrupt");
             break;
         case INTERRUPT_MOUSE:
             inputMouseInfo(&mouse, (char)(f.high));
@@ -98,7 +100,6 @@ void kernel_main() {
             break;
         }
     }
-
     return;
 }
 

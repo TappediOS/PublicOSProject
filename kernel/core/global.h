@@ -8,6 +8,9 @@
 // device - mouse.c
 MouseInfo mouse;
 
+// device - sata.c
+HBA_MEMORY *hbaMemory;
+
 // graphic
 GraphicInfo *gInfo = (GraphicInfo *)0x100000;
 

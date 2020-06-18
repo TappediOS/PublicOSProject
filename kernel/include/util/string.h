@@ -8,6 +8,7 @@
 #ifndef __UTIL_STRING__
 #define __UTIL_STRING__
 
+void *memset(void *s, int c, int n);
 int strlen(char *s);
 int strcmp(char *s, char *t);
 int strncmp(char *s, char *t, unsigned int n);

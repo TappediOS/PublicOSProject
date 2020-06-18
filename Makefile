@@ -14,11 +14,15 @@ iINCLUDE	= -I boot/include
 ###  Emulator Option  ###
 QEMU = qemu-system-x86_64
 BIOS = -bios tools/OVMF.fd
-DRIVE = -drive file=fat:rw:image,format=raw
+DRIVE = -drive if=pflash,format=raw,readonly,file=tools\OVMF.fd fat:rw:image
+DEVICE = -device ahci,id=ahci -device ide-drive,drive=sata,bus=ahci.0 -drive if=none,id=sata,file=tools\hdd.img
 MEMORY = -m 6G
+RTC = -rtc base=localtime
 
 COPY = copy
 
+copy: kernel/kernel.bin
+	$(COPY) kernel\kernel.bin image
 
 main.efi: boot/main.c $(fUEFI) $(fINCLUDE) Makefile
 	$(CC) boot/main.c -o main.efi $(iUEFI) $(iINCLUDE) $(CFLAGS)
@@ -26,5 +30,5 @@ main.efi: boot/main.c $(fUEFI) $(fINCLUDE) Makefile
 
 run:
 	$(COPY) kernel\kernel.bin image
-	$(QEMU) $(BIOS) $(DRIVE) $(MEMORY)
+	$(QEMU) $(BIOS) $(DRIVE) $(DEVICE) $(MEMORY) $(RTC)
 

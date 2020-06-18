@@ -196,14 +196,14 @@ EFI_STATUS efiMain(EFI_HANDLE ImageHandle, EFI_SYSTEM_TABLE *SystemTable) {
         Status = gBS->ExitBootServices(ImageHandle, mapKey);
         if (Status != EFI_SUCCESS) {
             printf(L"[Fatal] ExitBootServices : %s(%d)\r\n\r\n", err_msg[(Status & 0xFF)], (Status & 0xFF));
+            gBS->ExitBootServices(ImageHandle, mapKey);
         }
-        else {
-            __asm__("jmp    *0x00110000\n");
-            while (1);
-            return 0;
-        }
+        __asm__("jmp    *0x00110000\n");
+        while (1);
+        return 0;
     }
     printf(L"Boot Error\r\n");
+    efiMain(ImageHandle, SystemTable);
 
     while (1);
 
