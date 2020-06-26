@@ -268,17 +268,6 @@ void checkSataPort(void) {
     sprintf(debug, "[success] initialization sata port");
     printConsole(&console, debug);
 
-    memset(debug, 0, sizeof(debug));
-    sprintf(debug, "This is a pen.");
-
-    sataWrite(hbaMemory->ports, 0, 0x00, 1, (unsigned char *)debug);
-    printConsole(&console, "[success] WRITE");
-    memset(debug, 0, sizeof(debug));
-    sataRead(hbaMemory->ports, 0, 0x00, 1, (unsigned char *)debug);
-
-    char str[128];
-    for (i = 0; i < 0x10; i++) {
-        sprintf(str, "debug[%d] : %c", i, debug[i]);
-        printConsole(&console, str);
-    }
+    // sataWrite(hbaMemory->ports, 0, 0x00, 1, (unsigned char *)debug);
+    // sataRead(hbaMemory->ports, 0, 0x00, 1, (unsigned char *)debug);
 }

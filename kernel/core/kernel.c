@@ -9,6 +9,7 @@
 #include <device/mouse.h>
 #include <device/ahci.h>
 #include <device/sata.h>
+#include <fs/fs.h>
 #include <graphic/graphic.h>
 #include <memory/gdtidt.h>
 #include <memory/device.h>
@@ -18,6 +19,8 @@
 #include <util/stdio.h>
 #include <util/asmfunc.h>
 #include <util/fifo.h>
+
+#include <util/memman.h>
 
 #include "global.h"
 
@@ -38,6 +41,7 @@ void kernel_main() {
     drawConsole(&console);
     detectPciDevices();
     checkSataPort();
+    loadHddFree();
 
     initPaging();
     initIdt();

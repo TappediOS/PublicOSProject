@@ -8,11 +8,12 @@ LDFLAGS = -T scripts/kernel.ld
 OBJS = 	console\console.obj	\
 		core\entry.obj core\kernel.obj \
 		device\mouse.obj device\ahci.obj device\sata.obj \
+		fs\fs.obj \
 		graphic\init.obj graphic\simple.obj graphic\string.obj \
 		memory\asm_gdtidt.obj memory\gdtidt.obj memory\interrupt.obj memory\asm_interrupt.obj memory\device.obj \
 		memory\asm_fault.obj memory\fault.obj memory\paging.obj \
 		time\time.obj \
-		util\asmfunc.obj util\stdio.obj util\string.obj util\fifo.obj
+		util\asmfunc.obj util\stdio.obj util\string.obj util\fifo.obj util\memman.obj
 
 kernel.bin: $(OBJS) scripts\kernel.ld
 	ld -Map kernel.map $(LDFLAGS) -o kernel.exe $+
