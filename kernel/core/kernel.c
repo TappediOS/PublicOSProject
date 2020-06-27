@@ -17,9 +17,9 @@
 #include <memory/paging.h>
 #include <time/time.h>
 #include <util/stdio.h>
+#include <util/stdlib.h>
 #include <util/asmfunc.h>
 #include <util/fifo.h>
-
 #include <util/memman.h>
 
 #include "global.h"
@@ -53,12 +53,29 @@ void kernel_main() {
     io_out8(PIC1_IMR, 0xEF);
     io_sti();
 
+    initMemoryManagement(&kernelMemMan, 256, nkernelMemMan, 0x0FFFFFFF);
+
     initMouseInfo(&mouse);
 
     nFIFO f;
     initFIFO(&fifo);
 
+    unsigned int i;
     char str[256];
+    DIR_INFO dirInfo;
+    openDir("root", &dirInfo);
+    sprintf(str, "UP : %x  next : %x  nof : %x",
+            dirInfo.upDirSector, dirInfo.nextDirSector, dirInfo.numOfFile);
+    printConsole(&console, str);
+    for (i = 0; i < dirInfo.numOfFile; i++) {
+        sprintf(str, "FILENAME : %s   START : %x   NOS : %x   LSS : %x",
+                dirInfo.fileInfo[i].filename,
+                dirInfo.fileInfo[i].startSector,
+                dirInfo.fileInfo[i].numOfSector,
+                dirInfo.fileInfo[i].lastSectorSize);
+        printConsole(&console, str);
+    }
+
     int ret = 0;
     Time t;
     int cnt = 0, sec = 0;
